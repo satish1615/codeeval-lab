@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites><testsuite name="cache" tests="4" failures="0">
+  <testcase classname="tests.test_cache" name="test_stale_entry" />
+  <testcase classname="tests.test_cache" name="test_parallel_refresh" />
+  <testcase classname="tests.test_cache" name="test_cache_hit" />
+  <testcase classname="tests.test_api" name="test_get_item" />
+</testsuite></testsuites>

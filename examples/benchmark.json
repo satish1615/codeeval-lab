@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "name": "Cache invalidation regression benchmark",
+  "fail_to_pass": ["tests.test_cache.test_stale_entry", "tests.test_cache.test_parallel_refresh"],
+  "pass_to_pass": ["tests.test_cache.test_cache_hit", "tests.test_api.test_get_item"],
+  "protected_paths": ["tests/**", "benchmark/**", ".github/workflows/**"],
+  "max_new_failures": 0
+}

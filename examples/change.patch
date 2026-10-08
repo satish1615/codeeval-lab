@@ -1,0 +1,7 @@
+diff --git a/src/cache.py b/src/cache.py
+index 23abcba..89dcbae 100644
+--- a/src/cache.py
++++ b/src/cache.py
+@@ -14,3 +14,4 @@
+-old_entry = cache.get(key)
++old_entry = cache.get_valid(key)

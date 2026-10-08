@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codeeval-lab"
+version = "0.1.0"
+description = "A deterministic, auditable test-report evaluator for coding-agent repair benchmarks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{name = "Project contributors"}]
+keywords = ["evaluation", "coding-agents", "junit", "benchmark", "testing"]
+
+[project.scripts]
+codeeval = "codeeval.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
