@@ -1,0 +1,43 @@
+name: Publish project sources
+on:
+  push:
+    branches: [main]
+    paths:
+      - source.bundle.b64
+      - .github/workflows/bootstrap.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify and unpack project
+        shell: bash
+        run: |
+          if [ ! -f source.bundle.b64 ]; then
+            echo "Waiting for project archive"
+            exit 0
+          fi
+          python - <<'PY'
+          import base64, io, pathlib, shutil, tarfile
+          raw = base64.b64decode(pathlib.Path("source.bundle.b64").read_text().strip(), validate=True)
+          with tarfile.open(fileobj=io.BytesIO(raw), mode="r:xz") as archive:
+              for item in archive:
+                  path = pathlib.PurePosixPath(item.name)
+                  if path.is_absolute() or ".." in path.parts or not item.isfile():
+                      raise ValueError(f"Invalid archive path: {item.name!r}")
+                  target = pathlib.Path(*path.parts)
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  with archive.extractfile(item) as source, target.open("wb") as destination:
+                      shutil.copyfileobj(source, destination)
+          PY
+          PYTHONPATH=src python -m unittest discover -s tests -q
+          rm source.bundle.b64 .github/workflows/bootstrap.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add evaluator, tests, documentation and CI"
+          git push origin HEAD:main
